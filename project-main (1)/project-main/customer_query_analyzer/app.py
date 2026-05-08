@@ -1,6 +1,7 @@
 import streamlit as st
 
 from ui.styles    import CSS
+from ui.auth      import render_auth
 from ui.sidebar   import render_sidebar
 from ui.chat      import render_chat
 from ui.analytics import render_analytics, render_history_table
@@ -14,7 +15,15 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── CSS ───────────────────────────────────────────────────
+# ── Auth gate ─────────────────────────────────────────────
+if "user" not in st.session_state:
+    st.session_state.user = None
+
+if st.session_state.user is None:
+    render_auth()
+    st.stop()
+
+# ── CSS (injected after auth so login page gets its own) ──
 st.markdown(CSS, unsafe_allow_html=True)
 
 # ── Session state defaults ────────────────────────────────

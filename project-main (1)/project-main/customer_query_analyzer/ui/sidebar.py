@@ -170,12 +170,30 @@ def render_sidebar(_defaults: dict) -> str:
     Returns the API key entered by the user (or loaded from secrets).
     """
     with st.sidebar:
-        st.markdown("""
-        <div style='padding:6px 0 14px 0; border-bottom:1px solid #C0CDD8; margin-bottom:2px;'>
-            <div style='font-size:0.95rem;font-weight:700;color:#333333;font-family:Oswald,sans-serif;letter-spacing:0.5px;'>QUERY ANALYZER</div>
-            <div style='font-size:0.62rem;color:#99A0AA;margin-top:2px;font-family:Roboto Mono,monospace;'>BERT + GROQ ENGINE</div>
-        </div>
-        """, unsafe_allow_html=True)
+        user_email = st.session_state.get("user", {}).get("email", "")
+        st.markdown(
+            f"""
+            <div style='padding:6px 0 12px 0; border-bottom:1px solid #C0CDD8; margin-bottom:2px;'>
+                <div style='font-size:0.95rem;font-weight:700;color:#333333;font-family:Oswald,sans-serif;letter-spacing:0.5px;'>QUERY ANALYZER</div>
+                <div style='font-size:0.62rem;color:#99A0AA;margin-top:2px;font-family:Roboto Mono,monospace;'>BERT + GROQ ENGINE</div>
+                <div style='font-size:0.65rem;color:#1A7A2A;margin-top:6px;font-family:Roboto Mono,monospace;
+                            white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px;'
+                     title='{user_email}'>
+                    ✓ {user_email}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        if st.button("⎋ Sign Out", use_container_width=True, key="_signout"):
+            st.session_state.user = None
+            st.rerun()
+
+        st.markdown(
+            "<div style='height:1px;background:#D8E3EC;margin:10px 0;'></div>",
+            unsafe_allow_html=True,
+        )
 
         # ── API Key ──────────────────────────────────────
         st.markdown("<div class='sb-sec'>▸ API KEY (GROQ)</div>", unsafe_allow_html=True)

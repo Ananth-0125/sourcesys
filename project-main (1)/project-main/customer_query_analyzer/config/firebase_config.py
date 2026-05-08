@@ -1,0 +1,1 @@
+FIREBASE_API_KEY = "AIzaSyDXuZvYJa083npjOoCPmkmr58jzjdm2AnY"
